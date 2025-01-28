@@ -1,10 +1,32 @@
 # Code is modified version of base code by Chitra Nayal of GeeksforGeeks on the Haversine formula
 # https://www.geeksforgeeks.org/haversine-formula-to-find-distance-between-two-points-on-a-sphere/
 
+import csv
 import math
 
+def read_csv(filename):
+    coordinates = []
+    with open(filename, 'r') as file:
+        reader = csv.DictReader(file)
+        headers = reader.fieldnames
+
+        for col in headers:
+            if col.lower() == "latitude":
+                lat_col = col
+            elif col.lower() == "longitude":
+                lon_col = col
+
+        for row in reader:
+            if row[lat_col] and row[lon_col]:
+                lat = float(row[lat_col])
+                lon = float(row[lon_col])
+                coordinates.append((lat,lon))
+    return coordinates
+
+
+
 def haversine(lat1, lon1, lat2, lon2):
-    # Calculate the great-circle distance between two points on the Earth
+    # Calculate distance between two points on the Earth
     dLat = (lat2 - lat1) * math.pi / 180.0
     dLon = (lon2 - lon1) * math.pi / 180.0
 
@@ -39,18 +61,9 @@ def find_closest_points(array1, array2):
     return closest_points
 
 if __name__ == "__main__":
-    # Example input: two arrays of geo locations
-    array1 = [
-        (51.5007, 0.1246),  # London
-        (48.8566, 2.3522)   # Paris
-    ]
-
-    array2 = [
-        (34.0522, -118.2437), # Los Angeles
-        (35.6895, 139.6917)   # Tokyo
-    ]
-
+    array1 = [(42.454962, -71.107704)]
+    array2 = read_csv("Boston_311_012225.csv")
     results = find_closest_points(array1, array2)
 
     for lat1, lon1, closest_point, distance in results:
-        print(f"Point ({lat1}, {lon1}) is closest to {closest_point} with a distance of {distance:.2f} K.M.")
+        print(f"Point ({lat1}, {lon1}) is closest to {closest_point} with a distance of {distance:.2f} KM.")
