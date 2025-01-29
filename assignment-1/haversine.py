@@ -11,9 +11,10 @@ def read_csv(filename):
         headers = reader.fieldnames
 
         for col in headers:
-            if col.lower() == "latitude":
+            if col.lower() in ["latitude", "lat"]:
                 lat_col = col
-            elif col.lower() == "longitude":
+                print(lat_col)
+            elif col.lower() in ["longitude", "lng"]:
                 lon_col = col
 
         for row in reader:
@@ -61,9 +62,14 @@ def find_closest_points(array1, array2):
     return closest_points
 
 if __name__ == "__main__":
-    array1 = [(42.454962, -71.107704)]
-    array2 = read_csv("Boston_311_012225.csv")
+    # test 1
+    # array1 = [(42.454962, -71.107704)]
+    # array2 = read_csv("Boston_311_012225.csv")
+    
+    #test 2
+    array1 = read_csv("test_2/world_cities.csv")
+    array2 = read_csv("test_2/iata-icao.csv")
     results = find_closest_points(array1, array2)
 
     for lat1, lon1, closest_point, distance in results:
-        print(f"Point ({lat1}, {lon1}) is closest to {closest_point} with a distance of {distance:.2f} KM.")
+        print(f"Point ({lat1}, {lon1}) is closest to {closest_point} with a distance of {distance:.2f} KM")
