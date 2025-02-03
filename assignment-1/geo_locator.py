@@ -18,7 +18,7 @@ def read_csv(filename):
         for col in headers:
             if col.lower() in ["latitude", "lat"]:
                 lat_col = col
-            elif col.lower() in ["longitude", "lng", "long"]:
+            elif col.lower() in ["longitude", "lng", "lon"]:
                 lon_col = col
                 
         for row in reader:
