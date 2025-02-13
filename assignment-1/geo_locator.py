@@ -4,6 +4,8 @@
 # import pandas as pd
 import csv
 import math
+import json
+import xml.etree.ElementTree as ET
 
 # function to read in columns of latitude and longitude from csv files
 def is_valid_coordinate(lat, lon):
@@ -35,7 +37,31 @@ def read_csv(filename):
                         coordinates.append((lat,lon))
     return coordinates
 
+def read_json(filename):
+    coordinates = []
+    with open(filename, "r") as file:
+        data = json.load(file)
+        for item in data:
+            lat = item.get("latitude")
+            lon = item.get("longitude")
+            if lat is not None and lon is not None:
+                lat, lon = float(lat), float(lon)
+                if is_valid_coordinate(lat, lon):
+                    coordinates.append((lat, lon))
+    return coordinates
 
+def read_xml(filename):
+    coordinates = []
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    for item in root.findall(".//location"):
+        lat = item.find("latitude").text
+        lon = item.find("longitude").text
+        if lat and lon:
+            lat, lon = float(lat), float(lon)
+            if is_valid_coordinate(lat, lon):
+                coordinates.append((lat, lon))
+    return coordinates
 
 def haversine(lat1, lon1, lat2, lon2):
     # Calculate distance between two points on the Earth
@@ -73,20 +99,18 @@ def find_closest_points(array1, array2):
     return closest_points
 
 if __name__ == "__main__":
-    # test 1
-    # array1 = [(42.454962, -71.107704)]
-    # array2 = read_csv("test-1/Boston_311_012225.csv")
-    # results = find_closest_points(array1, array2)
+    input_format = "csv"  # Change to "json" or "xml" based on input format
+    if input_format == "csv":
+        array1 = read_csv("test-2/world_cities.csv")
+        array2 = read_csv("test-2/iata-icao.csv")
+    elif input_format == "json":
+        array1 = read_json("test-2/world_cities.json")
+        array2 = read_json("test-2/iata-icao.json")
+    elif input_format == "xml":
+        array1 = read_xml("test-2/world_cities.xml")
+        array2 = read_xml("test-2/iata-icao.xml")
     
-    #test 2
-    array1 = read_csv("test-2/world_cities.csv")
-    array2 = read_csv("test-2/iata-icao.csv")
     results = find_closest_points(array1, array2)
-
-    #test 3
-    # array1 = read_csv("test-3/cities.csv")
-    # array2 = read_csv("test-3/iata-icao.csv")
-    # results = find_closest_points(array1, array2)
 
     for lat1, lon1, closest_point, distance in results:
             lat_dms = decimal_to_dms(lat1)
