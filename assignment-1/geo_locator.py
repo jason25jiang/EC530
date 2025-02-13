@@ -9,6 +9,12 @@ import math
 def is_valid_coordinate(lat, lon):
     return -90 <= lat <= 90 and -180 <= lon <= 180
 
+def decimal_to_dms(degrees):
+    d = int(degrees)
+    m = int((abs(degrees) - abs(d)) * 60)
+    s = (abs(degrees) - abs(d) - m / 60) * 3600
+    return f"{d}°{m}'{s:.2f}\""
+
 def read_csv(filename):
     coordinates = []
     with open(filename, "r") as file:
@@ -83,4 +89,8 @@ if __name__ == "__main__":
     # results = find_closest_points(array1, array2)
 
     for lat1, lon1, closest_point, distance in results:
-        print(f"Point ({lat1}, {lon1}) is closest to {closest_point} with a distance of {distance:.2f} KM")
+            lat_dms = decimal_to_dms(lat1)
+            lon_dms = decimal_to_dms(lon1)
+            closest_lat_dms = decimal_to_dms(closest_point[0])
+            closest_lon_dms = decimal_to_dms(closest_point[1])
+            print(f"Point ({lat_dms}, {lon_dms}) is closest to ({closest_lat_dms}, {closest_lon_dms}) with a distance of {distance:.2f} KM")
