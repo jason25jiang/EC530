@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload a Document</title>
+</head>
+<body>
+    <h1>Upload Document</h1>
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" required />
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Analyze a Document</h2>
+    <input type="number" id="docIdInput" placeholder="Enter document ID" />
+    <button onclick="analyzeDocument()">Analyze</button>
+
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            const response = await fetch('http://localhost:8000/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            alert(data.message);
+        });
+
+        async function analyzeDocument() {
+            const docId = document.getElementById('docIdInput').value;
+            const response = await fetch(`http://localhost:8000/analyze/${docId}`);
+            const data = await response.json();
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
