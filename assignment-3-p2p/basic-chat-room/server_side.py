@@ -45,11 +45,11 @@ list_of_clients = []
 def clientthread(conn, addr): 
  
     # sends a message to the client whose user object is conn 
-    conn.send("Welcome to this chatroom!") 
+    conn.send("Welcome to this chatroom!".encode()) 
  
     while True: 
             try: 
-                message = conn.recv(2048) 
+                message = conn.recv(2048).decode() 
                 if message: 
  
                     """prints the message and address of the 
@@ -67,7 +67,9 @@ def clientthread(conn, addr):
                     remove(conn) 
  
             except: 
-                continue
+                remove(conn)
+                conn.close()
+                break
  
 """Using the below function, we broadcast the message to all 
 clients who's object is not the same as the one sending 
@@ -108,6 +110,3 @@ while True:
     # creates and individual thread for every user 
     # that connects 
     start_new_thread(clientthread,(conn,addr))     
- 
-conn.close() 
-server.close() 

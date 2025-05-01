@@ -27,7 +27,7 @@ async def read_index():
     return FileResponse("static/index.html")
 
 # Initialize SQLite DB
-conn = sqlite3.connect('documents.db', check_same_thread=False)
+conn = sqlite3.connect('db/documents.db', check_same_thread=False)
 c = conn.cursor()
 c.execute('''
     CREATE TABLE IF NOT EXISTS documents (
