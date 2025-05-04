@@ -2,8 +2,7 @@ import openai
 import os
 
 def generate_sql_query(user_query, schema_info):
-    """Generate SQL query using OpenAI based on user input."""
-    openai.api_key = os.getenv("OPENAI_API_KEY")  # Fetch API key from environment variable
+    openai.api_key = os.getenv("OPENAI_API_KEY")
     
     prompt = f"""
     You are an AI assistant tasked with converting user queries into SQL statements.
@@ -15,7 +14,7 @@ def generate_sql_query(user_query, schema_info):
     
     try:
         response = openai.Completion.create(
-            model="gpt-4",  # or "gpt-3.5-turbo" depending on your use case
+            model="gpt-4",
             prompt=prompt,
             max_tokens=150
         )

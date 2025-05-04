@@ -4,7 +4,6 @@ import sqlite3
 import os
 
 def handle_schema_conflict(csv_file, db_name):
-    """Handle schema conflicts when creating tables in SQLite."""
     try:
         df = pd.read_csv(csv_file)
         conn = sqlite3.connect(db_name)
@@ -39,7 +38,6 @@ def handle_schema_conflict(csv_file, db_name):
         conn.close()
 
 def create_table_from_csv(csv_file, db_name):
-    """Create table from CSV and load data."""
     df = pd.read_csv(csv_file)
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
@@ -52,7 +50,6 @@ def create_table_from_csv(csv_file, db_name):
     conn.commit()
 
 def get_sqlite_type(series):
-    """Return SQLite column type based on pandas data type."""
     if series.dtype == 'int64':
         return 'INTEGER'
     elif series.dtype == 'float64':

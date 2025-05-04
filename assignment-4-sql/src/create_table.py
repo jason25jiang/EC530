@@ -3,7 +3,6 @@ import sqlite3
 import os
 
 def create_table_from_csv(csv_file, db_name):
-    """Create a table in SQLite dynamically based on CSV file schema."""
     try:
         df = pd.read_csv(csv_file)
         conn = sqlite3.connect(db_name)
@@ -27,7 +26,6 @@ def create_table_from_csv(csv_file, db_name):
         conn.close()
 
 def get_sqlite_type(series):
-    """Return SQLite column type based on pandas data type."""
     if series.dtype == 'int64':
         return 'INTEGER'
     elif series.dtype == 'float64':

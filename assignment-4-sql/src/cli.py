@@ -1,9 +1,9 @@
 # cli.py
 import sqlite3
 import os
+import pandas as pd
 
 def start_cli_interaction(db_name):
-    """Start an interactive CLI for interacting with SQLite."""
     try:
         conn = sqlite3.connect(db_name)
         cursor = conn.cursor()
@@ -39,9 +39,6 @@ def start_cli_interaction(db_name):
         conn.close()
 
 def load_csv_to_sqlite(csv_file, db_name):
-    """Load CSV file into SQLite."""
-    import pandas as pd
-    
     df = pd.read_csv(csv_file)
     conn = sqlite3.connect(db_name)
     df.to_sql(name='data_table', con=conn, if_exists='replace', index=False)
