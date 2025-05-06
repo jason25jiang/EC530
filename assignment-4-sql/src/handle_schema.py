@@ -11,7 +11,6 @@ def handle_schema_conflict(csv_file, db_name):
         
         table_name = csv_file.split('.')[0]
         
-        # Check if the table already exists
         cursor.execute(f"PRAGMA table_info({table_name})")
         existing_schema = cursor.fetchall()
         
